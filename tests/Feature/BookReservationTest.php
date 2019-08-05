@@ -3,13 +3,20 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Book;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 
 class BookReservationTest extends TestCase
 {
-   public function a_book_can_added_to_a_library()
+
+    use RefreshDatabase;
+
+    /** @test */
+   public function testBook()
    {
+       $this->withoutExceptionHandling();
+
        $response = $this->post('/books', [
             'title' => 'Book title',
             'author' => 'Innocent',
@@ -19,4 +26,33 @@ class BookReservationTest extends TestCase
         $this->assertCount(1, Book::all());
 
    }
+    /** @test */
+   public function testTitle()
+   {
+       $this->withoutExceptionHandling();
+
+       $response = $this->post('/books', [
+            'title' => 'Book title',
+            'author' => '',
+        ]);
+        $response->assertOk();
+
+        $this->assertCount(1, Book::all());
+
+   }
+    /** @test */
+   public function testUpdate()
+   {
+       $this->withoutExceptionHandling();
+
+       $response = $this->post('/books', [
+            'title' => 'Book title',
+            'author' => '',
+        ]);
+        $response->assertOk();
+
+        $this->assertCount(1, Book::all());
+
+   }
+
 }
